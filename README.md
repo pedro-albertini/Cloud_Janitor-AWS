@@ -21,7 +21,6 @@
 - [Solução Proposta](#-solução-proposta)
 - [Arquitetura e Serviços Utilizados](#️-arquitetura-e-serviços-utilizados)
 - [Lógica de Funcionamento](#-lógica-de-funcionamento)
-- [Estrutura do Repositório](#-estrutura-do-repositório)
 - [Código da Função Lambda](#-código-da-função-lambda)
 - [Passo a Passo de Configuração](#-passo-a-passo-de-configuração)
 - [Exemplo de Cenário](#-exemplo-de-cenário)
@@ -137,30 +136,6 @@ AutoStop = true
 
 ---
 
-## 📁 Estrutura do Repositório
-
-```
-cloud-janitor/
-├── README.md
-├── lambda_function.py
-├── images/
-│   ├── arquitetura-cloud-janitor.png
-│   ├── diagrama-arquitetura.png
-│   ├── iam-role.png
-│   ├── iam-policy.png
-│   ├── lambda-config.png
-│   ├── codigo-lambda.png
-│   ├── ec2-tags.png
-│   ├── teste-lambda.png
-│   ├── cloudwatch-logs.png
-│   ├── eventbridge-scheduler.png
-│   └── billing-alarm.png
-└── docs/
-    └── observacoes.md
-```
-
----
-
 ## 🐍 Código da Função Lambda
 
 ```python
@@ -218,12 +193,32 @@ def lambda_handler(event, context):
 Antes de iniciar, configure um **Billing Alarm** para monitorar custos e evitar surpresas.
 
 **Configuração adotada:**
-- Limite de alerta: **US$ 0,50**
+- Limite de alerta: **US$ 03,00**
 - Notificação por e-mail via **SNS**
 
-<p align="center">
-  <img src="./images/billing-alarm.png" alt="Billing Alarm" width="700"/>
-</p>
+Selecione a métrica: 
+
+| <img width="1918" height="870" alt="image" src="https://github.com/user-attachments/assets/b78f6ce8-d659-4c67-ab39-25547ce2de05" />|
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Adicionando métrica para o alarme*|
+
+Selecione o tópico do SNS ou faça um caso ainda não tenha:
+
+| <img width="1896" height="728" alt="image" src="https://github.com/user-attachments/assets/22b1e88b-8c56-4718-8141-a61b798eaa42" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Adicionando SNS* |
+
+Define o limite do valor e a condição do seu alarme:
+
+| <img width="1902" height="748" alt="image" src="https://github.com/user-attachments/assets/0864876d-b984-4b1f-89a2-e8b8480dfa48" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Condições* |
+
+Adicione o nome e uma descrição se quiser:
+
+| <img width="1894" height="657" alt="image" src="https://github.com/user-attachments/assets/5a3b4051-d9b2-4217-b34b-c972e466d704" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
 
 ---
 
@@ -234,7 +229,7 @@ Crie uma policy com **permissões mínimas** para a Lambda (princípio do menor 
 ```json
 {
   "Version": "2012-10-17",
-  "Statement": [
+  "Statement": [ 
     {
       "Sid": "DescribeAndStopEC2",
       "Effect": "Allow",
@@ -248,10 +243,6 @@ Crie uma policy com **permissões mínimas** para a Lambda (princípio do menor 
 }
 ```
 
-<p align="center">
-  <img src="./images/iam-policy.png" alt="IAM Policy" width="700"/>
-</p>
-
 ---
 
 ### 3️⃣ Criar a IAM Role da Lambda
@@ -262,9 +253,17 @@ Crie uma role específica para a função Lambda com:
 - Policy customizada de EC2
 - `AWSLambdaBasicExecutionRole` para permissão de logs
 
-<p align="center">
-  <img src="./images/iam-role.png" alt="IAM Role" width="700"/>
-</p>
+| <img width="1896" height="805" alt="image" src="https://github.com/user-attachments/assets/cd60a1c6-bf66-4e54-b502-bc739a0efc86" />|
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
+
+| <img width="1899" height="561" alt="image" src="https://github.com/user-attachments/assets/d86c26b5-906c-4d6b-9194-6d0bcb4ae98c" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
+
+| <img width="1895" height="760" alt="image" src="https://github.com/user-attachments/assets/e534e19c-1001-4da5-9c02-c38e21ce687b" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
 
 ---
 
@@ -273,13 +272,15 @@ Crie uma role específica para a função Lambda com:
 | Configuração | Valor |
 |---|---|
 | Nome | `cloud-janitor-ec2-auto-stop` |
-| Runtime | Python 3.12 |
+| Runtime | Python 3.14 |
 | Arquitetura | x86_64 |
 | Role | CloudJanitorLambdaRole |
 
-<p align="center">
-  <img src="./images/lambda-config.png" alt="Configuração da Lambda" width="700"/>
-</p>
+
+| <img width="1541" height="753" alt="image" src="https://github.com/user-attachments/assets/464619f0-bfa7-46e6-80d0-931bc8d729ec" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
+
 
 ---
 
@@ -287,9 +288,10 @@ Crie uma role específica para a função Lambda com:
 
 Cole o código da função no editor da Lambda e faça o **Deploy**.
 
-<p align="center">
-  <img src="./images/codigo-lambda.png" alt="Código Lambda no Console AWS" width="700"/>
-</p>
+
+| <img width="1540" height="756" alt="image" src="https://github.com/user-attachments/assets/da2cf60a-becc-4b9d-8cae-a3955008c092" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
 
 ---
 
@@ -303,9 +305,11 @@ Configure as tags nas instâncias conforme a regra de negócio:
 | `Ambiente` | `Dev` / `Teste` / qualquer outro | Elegível para avaliação |
 | `AutoStop` | `true` | Instância **será desligada** (se não for produção) |
 
-<p align="center">
-  <img src="./images/ec2-tags.png" alt="Tags da EC2" width="700"/>
-</p>
+
+| <img width="1900" height="661" alt="image" src="https://github.com/user-attachments/assets/63c33100-944e-4c40-9245-03e12620fdfa" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
+
 
 ---
 
@@ -333,9 +337,10 @@ O teste valida:
 
 Após a execução, analise os logs no **CloudWatch** para validar o comportamento da automação.
 
-<p align="center">
-  <img src="./images/cloudwatch-logs.png" alt="CloudWatch Logs" width="700"/>
-</p>
+
+| <img width="1890" height="751" alt="image" src="https://github.com/user-attachments/assets/bfa6add9-df62-4a19-b566-31a137e5560c" /> |
+|-------------------------------------------------------------------------------------------------------------------------|
+| *Figura - Nome e descrição* |
 
 ---
 
@@ -344,10 +349,6 @@ Após a execução, analise os logs no **CloudWatch** para validar o comportamen
 Configure a execução recorrente via **EventBridge Scheduler**.
 
 **Exemplo de uso:** execução diária às `20:00` para desligar ambientes não produtivos ao fim do expediente.
-
-<p align="center">
-  <img src="./images/eventbridge-scheduler.png" alt="EventBridge Scheduler" width="700"/>
-</p>
 
 ---
 
