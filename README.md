@@ -281,7 +281,7 @@ Crie a função lambda com as informações da tabela acima:
 
 ### 5️⃣ Inserir o Código Python
 
-Cole o código da função no editor da Lambda e faça o **Deploy**.
+Cole o código da função: [`lambda_function`](lambda_function.py) no editor da Lambda e faça o **Deploy**.
 
 
 | <img width="1540" height="756" alt="image" src="https://github.com/user-attachments/assets/da2cf60a-becc-4b9d-8cae-a3955008c092" /> |
