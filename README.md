@@ -1,10 +1,6 @@
 # ☁️ Cloud Janitor — Automação Inteligente para Redução de Desperdício Financeiro na AWS
 
 <p align="center">
-  <img src="./images/arquitetura-cloud-janitor.png" alt="Arquitetura do Cloud Janitor" width="800"/>
-</p>
-
-<p align="center">
   <img src="https://img.shields.io/badge/AWS-Cloud-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white"/>
   <img src="https://img.shields.io/badge/AWS_Lambda-Serverless-F90?style=for-the-badge&logo=awslambda&logoColor=white"/>
   <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
@@ -19,7 +15,7 @@
 - [Descrição do Projeto](#-descrição-do-projeto)
 - [Problema de Negócio](#-problema-de-negócio)
 - [Solução Proposta](#-solução-proposta)
-- [Arquitetura e Serviços Utilizados](#️-arquitetura-e-serviços-utilizados)
+- [Serviços Utilizados](#️-serviços-utilizados)
 - [Lógica de Funcionamento](#-lógica-de-funcionamento)
 - [Código da Função Lambda](#-código-da-função-lambda)
 - [Passo a Passo de Configuração](#-passo-a-passo-de-configuração)
@@ -80,13 +76,7 @@ EventBridge Scheduler → Lambda (Python/Boto3) → EC2 (avalia tags) → Deslig
 
 ---
 
-## 🏗️ Arquitetura e Serviços Utilizados
-
-<p align="center">
-  <img src="./images/diagrama-arquitetura.png" alt="Diagrama de Arquitetura" width="750"/>
-</p>
-
-### Serviços AWS
+## 🏗️ Serviços Utilizados
 
 | Serviço | Função |
 |---|---|
@@ -214,7 +204,7 @@ Define o limite do valor e a condição do seu alarme:
 |-------------------------------------------------------------------------------------------------------------------------|
 | *Figura - Condições* |
 
-Adicione o nome e uma descrição se quiser:
+Adicione o nome e uma descrição do alarm:
 
 | <img width="1894" height="657" alt="image" src="https://github.com/user-attachments/assets/5a3b4051-d9b2-4217-b34b-c972e466d704" /> |
 |-------------------------------------------------------------------------------------------------------------------------|
@@ -255,15 +245,19 @@ Crie uma role específica para a função Lambda com:
 
 | <img width="1896" height="805" alt="image" src="https://github.com/user-attachments/assets/cd60a1c6-bf66-4e54-b502-bc739a0efc86" />|
 |-------------------------------------------------------------------------------------------------------------------------|
-| *Figura - Nome e descrição* |
+| *Figura - Caso de uso* |
+
+Coloque um nome e uma descrição da role:
 
 | <img width="1899" height="561" alt="image" src="https://github.com/user-attachments/assets/d86c26b5-906c-4d6b-9194-6d0bcb4ae98c" /> |
 |-------------------------------------------------------------------------------------------------------------------------|
 | *Figura - Nome e descrição* |
 
+Coloque as politicas de permissão e confiança: 
+
 | <img width="1895" height="760" alt="image" src="https://github.com/user-attachments/assets/e534e19c-1001-4da5-9c02-c38e21ce687b" /> |
 |-------------------------------------------------------------------------------------------------------------------------|
-| *Figura - Nome e descrição* |
+| *Figura - Policy* |
 
 ---
 
@@ -276,10 +270,11 @@ Crie uma role específica para a função Lambda com:
 | Arquitetura | x86_64 |
 | Role | CloudJanitorLambdaRole |
 
+Crie a função lambda com as informações da tabela acima:
 
 | <img width="1541" height="753" alt="image" src="https://github.com/user-attachments/assets/464619f0-bfa7-46e6-80d0-931bc8d729ec" /> |
 |-------------------------------------------------------------------------------------------------------------------------|
-| *Figura - Nome e descrição* |
+| *Figura - Lambda* |
 
 
 ---
@@ -291,7 +286,7 @@ Cole o código da função no editor da Lambda e faça o **Deploy**.
 
 | <img width="1540" height="756" alt="image" src="https://github.com/user-attachments/assets/da2cf60a-becc-4b9d-8cae-a3955008c092" /> |
 |-------------------------------------------------------------------------------------------------------------------------|
-| *Figura - Nome e descrição* |
+| *Figura - Editor lambda* |
 
 ---
 
@@ -306,9 +301,11 @@ Configure as tags nas instâncias conforme a regra de negócio:
 | `AutoStop` | `true` | Instância **será desligada** (se não for produção) |
 
 
+Execute as intâncias com as informações da tabela acima: 
+
 | <img width="1900" height="661" alt="image" src="https://github.com/user-attachments/assets/63c33100-944e-4c40-9245-03e12620fdfa" /> |
 |-------------------------------------------------------------------------------------------------------------------------|
-| *Figura - Nome e descrição* |
+| *Figura - EC2* |
 
 
 ---
@@ -327,10 +324,6 @@ O teste valida:
 - ✅ Aplicação da regra de negócio
 - ✅ Desligamento automático da instância elegível
 
-<p align="center">
-  <img src="./images/teste-lambda.png" alt="Teste Manual da Lambda" width="700"/>
-</p>
-
 ---
 
 ### 8️⃣ Validar os Logs no CloudWatch
@@ -340,7 +333,7 @@ Após a execução, analise os logs no **CloudWatch** para validar o comportamen
 
 | <img width="1890" height="751" alt="image" src="https://github.com/user-attachments/assets/bfa6add9-df62-4a19-b566-31a137e5560c" /> |
 |-------------------------------------------------------------------------------------------------------------------------|
-| *Figura - Nome e descrição* |
+| *Figura - Logs* |
 
 ---
 
